@@ -1,0 +1,32 @@
+{
+  "name": "halfyearplan",
+  "version": "0.0.0",
+  "description": "",
+  "main": "bin/start-web",
+  "dependencies": {
+    "baconjs": "^0.7.53",
+    "baobab": "^0.4.4",
+    "ramda": "^0.13.0"
+  },
+  "devDependencies": {
+    "http-server": "^0.8.0",
+    "babelify": "^5.0.4",
+    "browserify": "^9.0.3",
+    "browserify-shim": "^3.8.3",
+    "gulp": "^3.8.11",
+    "gulp-jshint": "^1.9.2",
+    "gulp-less": "^3.0.1",
+    "gulp-sourcemaps": "^1.5.0",
+    "gulp-uglify": "^1.1.0",
+    "gulp-util": "^3.0.4",
+    "jshint-stylish": "^1.0.1",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "babel-node ."
+  },
+  "author": "Andreas Hultgren",
+  "license": "ISC"
+}
