@@ -42,7 +42,7 @@ gulp.task('lint', function() {
       node: true,
       browser: true,
       globals: {
-        Range: true
+        $: true
       }
     }))
     .on('error', handleError)
