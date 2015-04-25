@@ -23,6 +23,7 @@ var entryTemplate = (entry) => {
 var template = function ({entries}) {
   return `<div>
     <table class="table table-bordered table-hover">
+      <caption>Ledger</caption>
       <thead>
         <tr>
           <th>Date</th>

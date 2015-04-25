@@ -14,6 +14,15 @@ Cursor.prototype.asProperty = function () {
     .toProperty(cursor.get());
 };
 
+//## Let users create these
+var categories = [
+  'Rent',
+  'Food',
+  'Travel'
+];
+
 module.exports = new Baobab({
+  periods: ['April', 'May', 'June', 'August', 'September', 'October'],
+  categories: categories,
   entries: []
 });
