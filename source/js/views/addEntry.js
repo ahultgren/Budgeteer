@@ -5,7 +5,7 @@ var Omnium = require('../utils/omnium');
 
 var categorySelect = (categories) => {
   var options = categories.map((category) => {
-    return `<option value="${category}">${category}</option>`;
+    return `<option value="${category.name}">${category.name}</option>`;
   }).join('');
 
   return `
@@ -34,7 +34,8 @@ var template = function ({categories, periods}) {
       <input type="date" class="js-entry-date" value="">
       <input type="text" class="js-entry-text" value="">
       ${categorySelect(categories)}
-      <input type="number" class="js-entry-value" value="">
+      <input type="number" class="js-entry-expense" value="">
+      <input type="number" class="js-entry-income" value="">
       <button type="button" class="js-entry-add" value="">Add</button>
     </div>
   `;
@@ -55,7 +56,8 @@ exports.init = function (elem, state) {
     date: elem.find('.js-entry-date').val(),
     description: elem.find('.js-entry-text').val(),
     category: elem.find('.js-entry-category').val(),
-    value: elem.find('.js-entry-value').val(),
+    expense: elem.find('.js-entry-expense').val(),
+    income: elem.find('.js-entry-income').val(),
     period: elem.find('.js-entry-period').val(),
   }))
   .onValue((data) => {

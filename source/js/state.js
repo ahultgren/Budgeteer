@@ -16,9 +16,22 @@ Cursor.prototype.asProperty = function () {
 
 //## Let users create these
 var categories = [
-  'Rent',
-  'Food',
-  'Travel'
+  {
+    name: 'Rent',
+    type: 'expense'
+  },
+  {
+    name: 'Food',
+    type: 'expense'
+  },
+  {
+    name: 'Travel',
+    type: 'expense'
+  },
+  {
+    name: 'Salary',
+    type: 'income'
+  }
 ];
 
 module.exports = new Baobab({

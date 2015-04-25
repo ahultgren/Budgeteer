@@ -4,18 +4,18 @@ var Bacon = require('baconjs');
 var R = require('ramda');
 var Omnium = require('../utils/omnium');
 
-var entryTemplate = (entry) => {
-  var value = entry.value; // parse expr
-  var positive = value > 0 ? value : '';
-  var negative = value < 0 ? -value : '';
+var incMinusExp = (entry) => {
+  return +entry.income - entry.expense;
+};
 
+var entryTemplate = (entry) => {
   return `
     <tr>
       <td>${entry.date}</td>
       <td>${entry.category}</td>
-      <td>${entry.text}</td>
-      <td>${positive}</td>
-      <td>${negative}</td>
+      <td>${entry.description || ''}</td>
+      <td>${entry.expense || ''}</td>
+      <td>${entry.income || ''}</td>
     </tr>
   `;
 };
@@ -38,7 +38,7 @@ var template = function ({entries}) {
       </tbody>
     </table>
     <p>
-      Total: ${R.sum(entries.map(R.prop('value')).map(Number))}
+      Total: ${R.sum(entries.map(incMinusExp).map(Number))}
     </p>
   </div>`;
 };

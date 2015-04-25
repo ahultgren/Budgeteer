@@ -7,9 +7,9 @@ exports.sync = (lsKey, tree) => {
 };
 
 exports.load = (lsKey, tree) => {
-  var stored = JSON.parse(window.localStorage.getItem(lsKey));
+  var stored = JSON.parse(window.localStorage.getItem(lsKey) || 'null');
 
-  if(typeof stored === 'object') {
+  if(stored && typeof stored === 'object') {
     Object.keys(stored).forEach((key) => {
       tree.set(key, stored[key]);
     });
