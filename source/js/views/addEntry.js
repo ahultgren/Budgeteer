@@ -9,7 +9,7 @@ var categorySelect = (categories) => {
   }).join('');
 
   return `
-    <select class="js-entry-category">
+    <select class="js-entry-category form-control">
       ${options}
     </select>
   `;
@@ -21,7 +21,7 @@ var periodSelect = (periods) => {
   }).join('');
 
   return `
-    <select class="js-entry-period">
+    <select class="js-entry-period form-control">
       ${options}
     </select>
   `;
@@ -29,14 +29,13 @@ var periodSelect = (periods) => {
 
 var template = function ({categories, periods}) {
   return `
-    <div>
+    <div class="form-inline">
       ${periodSelect(periods)}
-      <input type="date" class="js-entry-date" value="">
-      <input type="text" class="js-entry-text" value="">
       ${categorySelect(categories)}
-      <input type="number" class="js-entry-expense" value="">
-      <input type="number" class="js-entry-income" value="">
-      <button type="button" class="js-entry-add" value="">Add</button>
+      <input type="text" class="js-entry-text form-control" value="" placeholder="Description">
+      <input type="number" class="js-entry-expense form-control" value="" placeholder="Expense">
+      <input type="number" class="js-entry-income form-control" value="" placeholder="Income">
+      <button type="button" class="js-entry-add form-control btn btn-primary" value="">Add</button>
     </div>
   `;
 };
@@ -53,7 +52,6 @@ exports.init = function (elem, state) {
 
   elem.asEventStream('click', '.js-entry-add')
   .map(() => ({
-    date: elem.find('.js-entry-date').val(),
     description: elem.find('.js-entry-text').val(),
     category: elem.find('.js-entry-category').val(),
     expense: elem.find('.js-entry-expense').val(),

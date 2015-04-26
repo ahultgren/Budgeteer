@@ -4,14 +4,12 @@ var Bacon = require('baconjs');
 var R = require('ramda');
 var Omnium = require('../utils/omnium');
 
-var incMinusExp = (entry) => {
-  return +entry.income - entry.expense;
-};
+var hasPeriod = R.propEq('period');
+var incMinusExp = (entry) => +entry.income - entry.expense;
 
 var entryTemplate = (entry) => {
   return `
     <tr>
-      <td>${entry.date}</td>
       <td>${entry.category}</td>
       <td>${entry.description || ''}</td>
       <td>${entry.expense || ''}</td>
@@ -20,17 +18,16 @@ var entryTemplate = (entry) => {
   `;
 };
 
-var template = function ({entries}) {
+var table = (period, entries) => {
   return `<div>
     <table class="table table-bordered table-hover">
-      <caption>Ledger</caption>
+      <caption>${period}</caption>
       <thead>
         <tr>
-          <th>Date</th>
           <th>Category</th>
           <th>Comment</th>
-          <th>Income</th>
           <th>Expense</th>
+          <th>Income</th>
         </tr>
       </thead>
       <tbody>
@@ -43,15 +40,28 @@ var template = function ({entries}) {
   </div>`;
 };
 
+var template = function ({entries, periods}) {
+  return `
+    <div>
+      ${periods.map((period) => {
+        return table(period, entries.filter(hasPeriod(period)));
+      }).join('')}
+    </div>
+  `;
+};
+
 exports.init = function (elem, state) {
   var entries = state.select('entries');
+  var periods = state.select('periods');
+
   var render = Omnium.create({
     template,
     parent: elem.get(0)
   });
 
   Bacon.combineTemplate({
-    entries: entries.asProperty()
+    entries: entries.asProperty(),
+    periods: periods.asProperty(),
   })
   .onValue(render);
 };
