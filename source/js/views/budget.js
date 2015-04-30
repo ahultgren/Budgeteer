@@ -6,6 +6,11 @@ var Omnium = require('../utils/omnium');
 
 var hasCategory = R.propEq('category');
 var hasPeriod = R.propEq('period');
+var spentInPeriod = (entries, category, period, summer) => entries
+  .filter(hasCategory(category.name))
+  .filter(hasPeriod(period))
+  .map(summer)
+  .reduce(R.add, 0);
 
 var expMinusInc = entry => +entry.expense - entry.income;
 var incMinusExp = entry => +entry.income - entry.expense;
@@ -14,23 +19,41 @@ var periodHeader = period => `<th>${period}</th>`;
 var categoryRow = (periods, entries, summer) => (category) => {
   var periodResults = periods.map((period) => {
     return `
-      <td>${entries
-        .filter(hasCategory(category.name))
-        .filter(hasPeriod(period))
-        .map(summer)
-        .reduce(R.add, 0)}
-      </td>
+      <td>${spentInPeriod(entries, category, period, summer)}</td>
     `;
   }).join('');
+
+  var amountLeft = category.budget;
+  var periodBudgets = periods.map((period, i) => {
+    //## Take into consideration if period is past to move leftovers forward?
+
+    var maxBudgetThisPeriod = amountLeft/(periods.length - i);
+    var spentThisPeriod = spentInPeriod(entries, category, period, summer);
+    var budgetThisPeriod = Math.max(maxBudgetThisPeriod, spentThisPeriod);
+    var leftThisPeriod = budgetThisPeriod - spentThisPeriod;
+
+    amountLeft -= budgetThisPeriod;
+
+    return `
+      <td>${(leftThisPeriod).toFixed(0)}</td>
+    `;
+  }).join('');
+
+  var total = entries
+    .filter(hasCategory(category.name))
+    .map(summer)
+    .reduce(R.add, 0);
 
   return `
     <tr>
       <td>${category.name}</td>
       ${periodResults}
-      <td>${entries
-        .filter(hasCategory(category.name))
-        .map(summer)
-        .reduce(R.add, 0)}</td>
+      <td>${total}</td>
+    </tr>
+    <tr>
+      <td>${category.budget}</td>
+      ${periodBudgets}
+      <td>${category.budget - total}</td>
     </tr>
   `;
 };

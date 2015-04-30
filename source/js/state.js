@@ -18,19 +18,23 @@ Cursor.prototype.asProperty = function () {
 var categories = [
   {
     name: 'Rent',
-    type: 'expense'
+    type: 'expense',
+    budget: 54000,
   },
   {
     name: 'Food',
-    type: 'expense'
+    type: 'expense',
+    budget: 24000,
   },
   {
     name: 'Travel',
-    type: 'expense'
+    type: 'expense',
+    budget: 12000,
   },
   {
     name: 'Salary',
-    type: 'income'
+    type: 'income',
+    budget: 120000,
   }
 ];
 
