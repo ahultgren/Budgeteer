@@ -60,7 +60,7 @@ exports.init = function (elem, state) {
   }))
   .onValue((data) => {
     entries.push(data);
-    //render();
+    render();
   });
 
   Bacon.combineTemplate({
