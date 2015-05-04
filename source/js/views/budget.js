@@ -16,6 +16,14 @@ var expMinusInc = entry => +entry.expense - entry.income;
 var incMinusExp = entry => +entry.income - entry.expense;
 var periodHeader = period => `<th>${period}</th>`;
 
+var removeCategoryById = (categories, id) => {
+  var categoryIndex = R.findIndex(R.propEq('id', id))(categories.get());
+
+  if(categoryIndex > -1) {
+    categories.splice([categoryIndex, 1]);
+  }
+};
+
 var categoryRow = (periods, entries, summer) => (category) => {
   var periodResults = periods.map((period) => {
     return `
@@ -45,8 +53,13 @@ var categoryRow = (periods, entries, summer) => (category) => {
     .reduce(R.add, 0);
 
   return `
-    <tr>
-      <td>${category.name}</td>
+    <tr class="actions-row">
+      <td>
+        <div class="actions-box">
+          <button class="js-remove btn btn-xs btn-danger" data-id="${category.id}"><i class="glyphicon glyphicon-minus"></i></button>
+        </div>
+        ${category.name}
+      </td>
       ${periodResults}
       <td>${total}</td>
     </tr>
@@ -128,4 +141,10 @@ exports.init = (elem, state) => {
     entries: entries.asProperty(),
   })
   .onValue(render);
+
+  elem.asEventStream('click', '.js-remove')
+  .map('.currentTarget').map($)
+  .onValue((button) => {
+    removeCategoryById(categories, button.attr('data-id'));
+  });
 };

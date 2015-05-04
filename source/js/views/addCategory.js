@@ -1,5 +1,6 @@
 'use strict';
 
+var uuid = require('uuid');
 var Omnium = require('../utils/omnium');
 
 var template = ({name = '', budget = ''} = {}) => { // jshint ignore:line
@@ -31,6 +32,7 @@ exports.init = (elem, state) => {
     type: elem.find('.js-category-type').val(),
     name: elem.find('.js-category-name').val(),
     budget: elem.find('.js-category-budget').val(),
+    id: uuid.v4(),
   }))
   .onValue((data) => {
     categories.push(data);
