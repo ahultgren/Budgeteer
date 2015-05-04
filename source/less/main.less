@@ -9,3 +9,19 @@
     text-overflow: ellipsis;
   }
 }
+
+.actions {
+  &-box {
+    display: none;
+    position: absolute;
+    right: 0;
+  }
+
+  &-row {
+    &:hover {
+      .actions-box {
+        display: block;
+      }
+    }
+  }
+}

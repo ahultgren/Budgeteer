@@ -1,6 +1,7 @@
 'use strict';
 
 var Bacon = require('baconjs');
+var uuid = require('uuid');
 var Omnium = require('../utils/omnium');
 
 var categorySelect = (categories) => {
@@ -29,14 +30,14 @@ var periodSelect = (periods) => {
 
 var template = function ({categories, periods}) {
   return `
-    <div class="form-inline">
+    <form class="form-inline">
       ${periodSelect(periods)}
       ${categorySelect(categories)}
       <input type="text" class="js-entry-text form-control" value="" placeholder="Description">
       <input type="number" class="js-entry-expense form-control" value="" placeholder="Expense">
       <input type="number" class="js-entry-income form-control" value="" placeholder="Income">
-      <button type="button" class="js-entry-add form-control btn btn-primary" value="">Add</button>
-    </div>
+      <button class="js-entry-add form-control btn btn-primary" value="">Add</button>
+    </form>
   `;
 };
 
@@ -50,22 +51,24 @@ exports.init = function (elem, state) {
     parent: elem.get(0)
   });
 
-  elem.asEventStream('click', '.js-entry-add')
+  var adds = elem.asEventStream('submit')
   .map(() => ({
     description: elem.find('.js-entry-text').val(),
     category: elem.find('.js-entry-category').val(),
     expense: elem.find('.js-entry-expense').val(),
     income: elem.find('.js-entry-income').val(),
     period: elem.find('.js-entry-period').val(),
-  }))
-  .onValue((data) => {
+    id: uuid.v4(),
+  }));
+
+  adds.onValue((data) => {
     entries.push(data);
-    render();
   });
 
   Bacon.combineTemplate({
     categories: categories.asProperty(),
     periods: periods.asProperty(),
+    clearFields: adds.toProperty('noop'),
   })
   .onValue(render);
 };
