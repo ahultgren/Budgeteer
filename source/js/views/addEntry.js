@@ -1,7 +1,6 @@
 'use strict';
 
 var Bacon = require('baconjs');
-var uuid = require('uuid');
 var Omnium = require('../utils/omnium');
 
 var categorySelect = (categories) => {
@@ -41,29 +40,23 @@ var template = function ({categories, periods}) {
   `;
 };
 
-exports.init = function (elem, state) {
-  var entries = state.select('entries');
-  var categories = state.select('categories');
-  var periods = state.select('periods');
-
+exports.init = function (elem, {periods, categories, entries}, actions) {
   var render = Omnium.create({
     template,
     parent: elem.get(0)
   });
 
   var adds = elem.asEventStream('submit')
+  .doAction('.preventDefault')
   .map(() => ({
     description: elem.find('.js-entry-text').val(),
     category: elem.find('.js-entry-category').val(),
     expense: elem.find('.js-entry-expense').val(),
     income: elem.find('.js-entry-income').val(),
     period: elem.find('.js-entry-period').val(),
-    id: uuid.v4(),
   }));
 
-  adds.onValue((data) => {
-    entries.push(data);
-  });
+  adds.onValue(actions.addEntry);
 
   Bacon.combineTemplate({
     categories: categories.asProperty(),

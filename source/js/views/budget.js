@@ -16,14 +16,6 @@ var expMinusInc = entry => +entry.expense - entry.income;
 var incMinusExp = entry => +entry.income - entry.expense;
 var periodHeader = period => `<th>${period}</th>`;
 
-var removeCategoryById = (categories, id) => {
-  var categoryIndex = R.findIndex(R.propEq('id', id))(categories.get());
-
-  if(categoryIndex > -1) {
-    categories.splice([categoryIndex, 1]);
-  }
-};
-
 var categoryRow = (periods, entries, summer) => (category) => {
   var periodResults = periods.map((period) => {
     return `
@@ -125,11 +117,7 @@ var template = ({periods, categories, entries}) => {
   `;
 };
 
-exports.init = (elem, state) => {
-  var periods = state.select('periods');
-  var categories = state.select('categories');
-  var entries = state.select('entries');
-
+exports.init = (elem, {periods, categories, entries}, actions) => {
   var render = Omnium.create({
     template,
     parent: elem.get(0)
@@ -145,6 +133,6 @@ exports.init = (elem, state) => {
   elem.asEventStream('click', '.js-remove')
   .map('.currentTarget').map($)
   .onValue((button) => {
-    removeCategoryById(categories, button.attr('data-id'));
+    actions.removeCategory(button.attr('data-id'));
   });
 };

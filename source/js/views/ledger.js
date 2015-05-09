@@ -7,14 +7,6 @@ var Omnium = require('../utils/omnium');
 var hasPeriod = R.propEq('period');
 var incMinusExp = (entry) => +entry.income - entry.expense;
 
-var removeEntryById = (entries, id) => {
-  var entryIndex = R.findIndex(R.propEq('id', id))(entries.get());
-
-  if(entryIndex > -1) {
-    entries.splice([entryIndex, 1]);
-  }
-};
-
 var entryTemplate = (entry) => {
   return `
     <tr class="actions-row">
@@ -63,10 +55,7 @@ var template = function ({entries, periods}) {
   `;
 };
 
-exports.init = function (elem, state) {
-  var entries = state.select('entries');
-  var periods = state.select('periods');
-
+exports.init = function (elem, {periods, entries}, actions) {
   var render = Omnium.create({
     template,
     parent: elem.get(0)
@@ -81,6 +70,6 @@ exports.init = function (elem, state) {
   elem.asEventStream('click', '.js-remove')
   .map('.currentTarget').map($)
   .onValue((button) => {
-    removeEntryById(entries, button.attr('data-id'));
+    actions.removeEntry(button.attr('data-id'));
   });
 };

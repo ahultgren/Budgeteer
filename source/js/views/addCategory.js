@@ -1,6 +1,5 @@
 'use strict';
 
-var uuid = require('uuid');
 var Omnium = require('../utils/omnium');
 
 var template = ({name = '', budget = ''} = {}) => { // jshint ignore:line
@@ -17,9 +16,7 @@ var template = ({name = '', budget = ''} = {}) => { // jshint ignore:line
   `;
 };
 
-exports.init = (elem, state) => {
-  var categories = state.select('categories');
-
+exports.init = (elem, state, actions) => {
   var render = Omnium.create({
     parent: elem.get(0),
     template
@@ -28,14 +25,12 @@ exports.init = (elem, state) => {
   render();
 
   elem.asEventStream('submit')
+  .doAction('.preventDefault')
   .map(() => ({
     type: elem.find('.js-category-type').val(),
     name: elem.find('.js-category-name').val(),
     budget: elem.find('.js-category-budget').val(),
-    id: uuid.v4(),
   }))
-  .onValue((data) => {
-    categories.push(data);
-    render();
-  });
+  .doAction(actions.addCategory)
+  .onValue(render);
 };
