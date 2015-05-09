@@ -6,7 +6,9 @@ var state = require('../state');
 
 var actions = module.exports = {
   getCurrentPlan () {
-    return state.select('plans', '0');
+    var id = state.select('currentPlanId').get();
+    var index = R.findIndex(R.propEq('id', id))(state.select('plans').get());
+    return state.select('plans', index);
   },
 
   addCategory ({type, name, budget}) {
@@ -21,6 +23,10 @@ var actions = module.exports = {
       description, category, expense, income, period,
       id: uuid.v4(),
     });
+  },
+
+  updateCurrentPlan (id) {
+    state.select('currentPlanId').set(id);
   },
 
   removeCategory (id) {

@@ -40,7 +40,7 @@ var template = function ({categories, periods}) {
   `;
 };
 
-exports.init = function (elem, {periods, categories, entries}, actions) {
+exports.init = function (elem, {periods, categories}, actions) {
   var render = Omnium.create({
     template,
     parent: elem.get(0)

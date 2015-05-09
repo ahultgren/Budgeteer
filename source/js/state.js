@@ -2,11 +2,13 @@
 
 var Baobab = require('baobab');
 var Bacon = require('baconjs');
+var R = require('ramda');
 
 // Monkey patch cursors to get them as Bacon properties
 var Cursor = require('baobab/src/cursor');
+var Facet = require('baobab/src/facet');
 
-Cursor.prototype.asProperty = function () {
+Cursor.prototype.asProperty = Facet.prototype.asProperty = function () {
   var cursor = this;
 
   return Bacon.fromEventTarget(cursor, 'update')
@@ -43,13 +45,50 @@ var categories = [
 ];
 
 module.exports = new Baobab({
+  currentPlanId: 'default-plan',
   plans: [
     {
       name: 'Sample plan',
       id: 'default-plan',
       periods: ['April', 'May', 'June', 'August', 'September', 'October'],
       entries: []
+    },
+    {
+      name: 'Another plan',
+      id: 'default-plan2',
+      periods: ['September', 'October', 'April', 'May', 'June', 'August'],
+      entries: []
     }
   ],
   categories: categories,
+}, {
+  facets: {
+    currentPlan: {
+      cursors: {
+        id: 'currentPlanId',
+        plans: 'plans',
+      },
+      get ({id, plans}) {
+        return R.find(R.propEq('id', id), plans);
+      }
+    },
+    currentEntries: {
+      cursors: {
+        id: 'currentPlanId',
+        plans: 'plans',
+      },
+      get ({id, plans}) {
+        return R.find(R.propEq('id', id), plans).entries;
+      }
+    },
+    currentPeriods: {
+      cursors: {
+        id: 'currentPlanId',
+        plans: 'plans',
+      },
+      get ({id, plans}) {
+        return R.find(R.propEq('id', id), plans).periods;
+      }
+    },
+  }
 });
