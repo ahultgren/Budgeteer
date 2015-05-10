@@ -55,4 +55,13 @@ var actions = module.exports = {
     }
   },
 
+  removePlan (id) {
+    var plans = state.select('plans');
+    var planIndex = R.findIndex(R.propEq('id', id))(plans.get());
+
+    if(planIndex > -1) {
+      plans.splice([planIndex, 1]);
+    }
+  },
+
 };
