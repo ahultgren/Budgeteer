@@ -63,7 +63,7 @@ module.exports = new Baobab({
         plans: 'plans',
       },
       get ({id, plans}) {
-        return R.find(R.propEq('id', id), plans);
+        return R.find(R.propEq('id', id), plans) || {};
       }
     },
     currentEntries: {
@@ -72,7 +72,8 @@ module.exports = new Baobab({
         plans: 'plans',
       },
       get ({id, plans}) {
-        return R.find(R.propEq('id', id), plans).entries;
+        var plan = R.find(R.propEq('id', id), plans);
+        return plan && plan.entries || [];
       }
     },
     currentPeriods: {
@@ -81,7 +82,8 @@ module.exports = new Baobab({
         plans: 'plans',
       },
       get ({id, plans}) {
-        return R.find(R.propEq('id', id), plans).periods;
+        var plan = R.find(R.propEq('id', id), plans);
+        return plan && plan.periods;
       }
     },
   }

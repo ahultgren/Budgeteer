@@ -46,6 +46,10 @@ var table = (period, entries) => {
 };
 
 var template = function ({entries, periods}) {
+  if(!periods) {
+    return `<div>No plan selected</div>`;
+  }
+
   return `
     <div>
       ${periods.map((period) => {

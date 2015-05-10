@@ -28,6 +28,10 @@ var periodSelect = (periods) => {
 };
 
 var template = function ({categories, periods}) {
+  if(!periods) {
+    return `<form class="form-inline"></form>`;
+  }
+
   return `
     <form class="form-inline">
       ${periodSelect(periods)}

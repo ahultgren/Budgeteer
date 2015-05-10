@@ -104,6 +104,10 @@ var balance = (entries, periods) => {
 };
 
 var template = ({periods, categories, entries}) => {
+  if(!periods) {
+    return `<div>No plan selected</div>`;
+  }
+
   var expenses = categories.filter(R.propEq('type', 'expense'));
   var incomes = categories.filter(R.propEq('type', 'income'));
   var periodTable = table(periods);
