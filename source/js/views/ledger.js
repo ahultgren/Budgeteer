@@ -7,23 +7,42 @@ var Omnium = require('../utils/omnium');
 var hasPeriod = R.propEq('period');
 var incMinusExp = (entry) => +entry.income - entry.expense;
 
-var entryTemplate = (entry) => {
+var categoryOption = R.curry((current, {id, name}) => {
+  var selected = current === id ? 'selected' : '';
+  return `<option value="${id}" ${selected}>${name}</option>`;
+});
+
+var categorySelect = (categories, current) => {
   return `
-    <tr class="actions-row">
+    <select class="editable form-control input-sm" data-field="category">
+      ${categories.map(categoryOption(current)).join('')}
+    </select>
+  `;
+};
+
+var entryTemplate = R.curry((categories, entry) => {
+  return `
+    <tr class="actions-row" data-id="${entry.id}">
       <td>
         <div class="actions-box">
           <button class="js-remove btn btn-xs btn-danger" data-id="${entry.id}"><i class="glyphicon glyphicon-minus"></i></button>
         </div>
-        <span>${entry.category}</span>
+        ${categorySelect(categories, entry.category)}
       </td>
-      <td>${entry.description || ''}</td>
-      <td>${entry.expense || ''}</td>
-      <td>${entry.income || ''}</td>
+      <td>
+        <input class="editable" data-field="description" value="${entry.description || ''}">
+      </td>
+      <td>
+        <input type="number" data-field="expense" class="editable" value="${entry.expense || ''}">
+      </td>
+      <td>
+        <input type="number" data-field="income" class="editable" value="${entry.income || ''}">
+      </td>
     </tr>
   `;
-};
+});
 
-var table = (period, entries) => {
+var table = (period, entries, categories) => {
   return `<div>
     <table class="table table-bordered table-hover">
       <caption>${period}</caption>
@@ -36,7 +55,7 @@ var table = (period, entries) => {
         </tr>
       </thead>
       <tbody>
-        ${entries.map(entryTemplate).join('')}
+        ${entries.map(entryTemplate(categories)).join('')}
       </tbody>
     </table>
     <p>
@@ -45,7 +64,7 @@ var table = (period, entries) => {
   </div>`;
 };
 
-var template = function ({entries, periods}) {
+var template = function ({entries, periods, categories}) {
   if(!periods) {
     return `<div>No plan selected</div>`;
   }
@@ -53,13 +72,13 @@ var template = function ({entries, periods}) {
   return `
     <div>
       ${periods.map((period) => {
-        return table(period, entries.filter(hasPeriod(period)));
+        return table(period, entries.filter(hasPeriod(period)), categories);
       }).join('')}
     </div>
   `;
 };
 
-exports.init = function (elem, {periods, entries}, actions) {
+exports.init = function (elem, {periods, entries, categories}, actions) {
   var render = Omnium.create({
     template,
     parent: elem.get(0)
@@ -68,6 +87,7 @@ exports.init = function (elem, {periods, entries}, actions) {
   Bacon.combineTemplate({
     entries: entries.asProperty(),
     periods: periods.asProperty(),
+    categories: categories.asProperty(),
   })
   .onValue(render);
 
@@ -75,5 +95,17 @@ exports.init = function (elem, {periods, entries}, actions) {
   .map('.currentTarget').map($)
   .onValue((button) => {
     actions.removeEntry(button.attr('data-id'));
+  });
+
+  elem.asEventStream('change')
+  .map('.target').map($)
+  .onValue((field) => {
+    var id = field.closest('tr').attr('data-id');
+    var key = field.attr('data-field');
+    var value = field.val();
+
+    actions.updateEntry(id, {
+      [key]: value
+    });
   });
 };

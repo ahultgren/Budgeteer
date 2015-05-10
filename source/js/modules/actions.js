@@ -33,6 +33,19 @@ var actions = module.exports = {
     });
   },
 
+  updateEntry (id, fields) {
+    var entries = actions.getCurrentPlan().select('entries');
+    var entryIndex = R.findIndex(R.propEq('id', id))(entries.get());
+
+    if(entryIndex > -1) {
+      let entry = actions.getCurrentPlan().select('entries', entryIndex);
+
+      Object.keys(fields).forEach((key) => {
+        entry.set(key, fields[key]);
+      });
+    }
+  },
+
   updateCurrentPlan (id) {
     state.select('currentPlanId').set(id);
   },

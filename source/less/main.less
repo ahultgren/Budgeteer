@@ -31,3 +31,30 @@
     }
   }
 }
+
+.editable {
+  border: none;
+  border-bottom: 1px dashed transparent;
+  width: 100%;
+  padding: 0;
+
+  select& {
+    -webkit-appearance: none;
+    border: 0;
+    border-radius: 0;
+    height: 21px;
+    color: inherit;
+    font-size: inherit;
+    line-height: 1;
+
+    &:not(:focus) {
+      box-shadow: none;
+    }
+  }
+
+  &:focus {
+    &:not(select) {
+      border-bottom: 1px dashed #ccc;
+    }
+  }
+}

@@ -7,7 +7,7 @@ var Omnium = require('../utils/omnium');
 var hasCategory = R.propEq('category');
 var hasPeriod = R.propEq('period');
 var spentInPeriod = (entries, category, period, summer) => entries
-  .filter(hasCategory(category.name))
+  .filter(hasCategory(category.id))
   .filter(hasPeriod(period))
   .map(summer)
   .reduce(R.add, 0);
