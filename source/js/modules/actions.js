@@ -25,6 +25,14 @@ var actions = module.exports = {
     });
   },
 
+  addPeriod ({name, periods}) {
+    state.select('plans').push({
+      name, periods,
+      id: uuid.v4(),
+      entries: [],
+    });
+  },
+
   updateCurrentPlan (id) {
     state.select('currentPlanId').set(id);
   },

@@ -9,6 +9,7 @@ var addEntry = require('./views/addEntry');
 var budget = require('./views/budget');
 var addCategory = require('./views/addCategory');
 var plans = require('./views/plans');
+var addPlan = require('./views/addPlan');
 
 localstate.load('state', state);
 localstate.sync('state', state);
@@ -26,3 +27,4 @@ addEntry.init($('.js-add-entry'), viewState, actions);
 budget.init($('.js-budget'), viewState, actions);
 addCategory.init($('.js-add-category'), viewState, actions);
 plans.init($('.js-plans'), viewState, actions);
+addPlan.init($('.js-add-plan'), viewState, actions);

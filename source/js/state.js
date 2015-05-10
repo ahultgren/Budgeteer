@@ -52,12 +52,6 @@ module.exports = new Baobab({
       id: 'default-plan',
       periods: ['April', 'May', 'June', 'August', 'September', 'October'],
       entries: []
-    },
-    {
-      name: 'Another plan',
-      id: 'default-plan2',
-      periods: ['September', 'October', 'April', 'May', 'June', 'August'],
-      entries: []
     }
   ],
   categories: categories,
