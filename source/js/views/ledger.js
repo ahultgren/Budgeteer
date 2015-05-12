@@ -43,6 +43,9 @@ var entryTemplate = R.curry((categories, entry) => {
 });
 
 var table = (period, entries, categories) => {
+  var result = R.sum(entries.map(incMinusExp).map(Number));
+  var negative = result < 0 ? 'u-negative' : '';
+
   return `<div>
     <table class="table table-bordered table-hover">
       <caption>${period}</caption>
@@ -59,7 +62,7 @@ var table = (period, entries, categories) => {
       </tbody>
     </table>
     <p>
-      Total: ${R.sum(entries.map(incMinusExp).map(Number))}
+      Result: <span class="${negative}">${result}</span>
     </p>
   </div>`;
 };

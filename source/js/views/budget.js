@@ -40,9 +40,10 @@ var categoryRow = (periods, entries, summer) => (category) => {
   }).join('');
 
   var total = entries
-    .filter(hasCategory(category.name))
+    .filter(hasCategory(category.id))
     .map(summer)
     .reduce(R.add, 0);
+  var negative = category.budget - total < 0 ? 'u-negative' : '';
 
   return `
     <tr class="actions-row" data-id="${category.id}">
@@ -58,7 +59,7 @@ var categoryRow = (periods, entries, summer) => (category) => {
     <tr data-id="${category.id}">
       <td><input class="editable" data-field="budget" value="${category.budget}"></td>
       ${periodBudgets}
-      <td>${category.budget - total}</td>
+      <td class="${negative}">${category.budget - total}</td>
     </tr>
   `;
 };
@@ -85,8 +86,9 @@ var periodResultBalance = (entries) => (period) => {
     .filter(hasPeriod(period))
     .map(incMinusExp)
     .reduce(R.add, 0);
+  var negative = balance < 0 ? 'u-negative' : '';
 
-  return `<td>${balance}</td>`;
+  return `<td class="${negative}">${balance}</td>`;
 };
 
 var totalResultBalance = (entries) => {
@@ -94,11 +96,14 @@ var totalResultBalance = (entries) => {
 };
 
 var balance = (entries, periods) => {
+  var total = totalResultBalance(entries);
+  var negative = total < 0 ? 'u-negative' : '';
+
   return `
     <tr>
       <td>Balance</td>
       ${periods.map(periodResultBalance(entries)).join('')}
-      <td>${totalResultBalance(entries)}</td>
+      <td class="${negative}">${total}</td>
     </tr>
   `;
 };

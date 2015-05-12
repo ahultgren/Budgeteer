@@ -5,7 +5,7 @@ var Omnium = require('../utils/omnium');
 
 var categorySelect = (categories) => {
   var options = categories.map((category) => {
-    return `<option value="${category.name}">${category.name}</option>`;
+    return `<option value="${category.id}">${category.name}</option>`;
   }).join('');
 
   return `
