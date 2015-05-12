@@ -51,10 +51,10 @@ module.exports = new Baobab({
       name: 'Sample plan',
       id: 'default-plan',
       periods: ['April', 'May', 'June', 'August', 'September', 'October'],
-      entries: []
+      entries: [],
+      categories: categories,
     }
   ],
-  categories: categories,
 }, {
   facets: {
     currentPlan: {
@@ -64,6 +64,16 @@ module.exports = new Baobab({
       },
       get ({id, plans}) {
         return R.find(R.propEq('id', id), plans) || {};
+      }
+    },
+    currentCategories: {
+      cursors: {
+        id: 'currentPlanId',
+        plans: 'plans',
+      },
+      get ({id, plans}) {
+        var plan = R.find(R.propEq('id', id), plans);
+        return plan && plan.categories || [];
       }
     },
     currentEntries: {

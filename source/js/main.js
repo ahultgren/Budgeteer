@@ -17,7 +17,7 @@ localstate.sync('state', state);
 var viewState = {
   plans: state.select('plans'),
   currentPlanId: state.select('currentPlanId'),
-  categories: state.select('categories'),
+  categories: state.facets.currentCategories,
   entries: state.facets.currentEntries,
   periods: state.facets.currentPeriods,
 };

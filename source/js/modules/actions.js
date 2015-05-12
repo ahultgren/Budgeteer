@@ -12,7 +12,7 @@ var actions = module.exports = {
   },
 
   addCategory ({type, name, budget}) {
-    state.select('categories').push({
+    actions.getCurrentPlan().select('categories').push({
       type, name, budget,
       id: uuid.v4(),
     });
@@ -34,11 +34,11 @@ var actions = module.exports = {
   },
 
   updateCategory (id, fields) {
-    var categories = state.select('categories');
+    var categories = actions.getCurrentPlan().select('categories');
     var categoryIndex = R.findIndex(R.propEq('id', id))(categories.get());
 
     if(categoryIndex > -1) {
-      let category = state.select('categories', categoryIndex);
+      let category = actions.getCurrentPlan().select('categories', categoryIndex);
 
       Object.keys(fields).forEach((key) => {
         category.set(key, fields[key]);
@@ -64,7 +64,7 @@ var actions = module.exports = {
   },
 
   removeCategory (id) {
-    var categories = state.select('categories');
+    var categories = actions.getCurrentPlan().select('categories');
     var categoryIndex = R.findIndex(R.propEq('id', id))(categories.get());
 
     if(categoryIndex > -1) {
