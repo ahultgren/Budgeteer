@@ -45,18 +45,18 @@ var categoryRow = (periods, entries, summer) => (category) => {
     .reduce(R.add, 0);
 
   return `
-    <tr class="actions-row">
+    <tr class="actions-row" data-id="${category.id}">
       <td>
         <div class="actions-box">
           <button class="js-remove btn btn-xs btn-danger" data-id="${category.id}"><i class="glyphicon glyphicon-minus"></i></button>
         </div>
-        ${category.name}
+        <input class="editable" data-field="name" value="${category.name}">
       </td>
       ${periodResults}
       <td>${total}</td>
     </tr>
-    <tr>
-      <td>${category.budget}</td>
+    <tr data-id="${category.id}">
+      <td><input class="editable" data-field="budget" value="${category.budget}"></td>
       ${periodBudgets}
       <td>${category.budget - total}</td>
     </tr>
@@ -138,5 +138,17 @@ exports.init = (elem, {periods, categories, entries}, actions) => {
   .map('.currentTarget').map($)
   .onValue((button) => {
     actions.removeCategory(button.attr('data-id'));
+  });
+
+  elem.asEventStream('change')
+  .map('.target').map($)
+  .onValue((field) => {
+    var id = field.closest('tr').attr('data-id');
+    var key = field.attr('data-field');
+    var value = field.val();
+
+    actions.updateCategory(id, {
+      [key]: value
+    });
   });
 };
