@@ -90,7 +90,7 @@ exports.init = (elem, _, actions) => {
     var extendedPeriods = [...periods].concat(periods.slice(0, numberOfPeriods));
     var planPeriods = extendedPeriods.slice(selectedPeriodIndex, selectedPeriodIndex + numberOfPeriods);
 
-    actions.addPeriod({
+    actions.addPlan({
       name,
       periods: planPeriods
     });

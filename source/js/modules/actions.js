@@ -25,11 +25,12 @@ var actions = module.exports = {
     });
   },
 
-  addPeriod ({name, periods}) {
+  addPlan ({name, periods}) {
     state.select('plans').push({
       name, periods,
       id: uuid.v4(),
       entries: [],
+      categories: []
     });
   },
 
