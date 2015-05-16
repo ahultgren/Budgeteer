@@ -5,7 +5,6 @@ var localstate = require('./modules/localstate');
 var actions = require('./modules/actions');
 
 var ledger = require('./views/ledger');
-var addEntry = require('./views/addEntry');
 var budget = require('./views/budget');
 var addCategory = require('./views/addCategory');
 var plans = require('./views/plans');
@@ -23,7 +22,6 @@ var viewState = {
 };
 
 ledger.init($('.js-ledger'), viewState, actions);
-addEntry.init($('.js-add-entry'), viewState, actions);
 budget.init($('.js-budget'), viewState, actions);
 addCategory.init($('.js-add-category'), viewState, actions);
 plans.init($('.js-plans'), viewState, actions);
