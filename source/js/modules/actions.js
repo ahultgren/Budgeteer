@@ -25,12 +25,12 @@ var actions = module.exports = {
     });
   },
 
-  addPlan ({name, periods}) {
+  addPlan ({name, periods, categories = []}) { // jshint ignore:line
     state.select('plans').push({
       name, periods,
       id: uuid.v4(),
       entries: [],
-      categories: []
+      categories: categories
     });
   },
 

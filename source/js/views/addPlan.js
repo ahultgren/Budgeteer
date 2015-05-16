@@ -46,6 +46,12 @@ var modal = () => {
                   </select>
                 </div>
               </div>
+              <div class="form-group">
+                <label class="col-sm-4 control-label">Use budgets from current plan</label>
+                <div class="col-sm-6">
+                  <input type="checkbox" class="js-add-plan-clone">
+                </div>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -67,7 +73,7 @@ var template = () => {
   `;
 };
 
-exports.init = (elem, _, actions) => {
+exports.init = (elem, {categories}, actions) => {
   var render = Omnium.create({
     parent: elem.get(0),
     template
@@ -84,6 +90,7 @@ exports.init = (elem, _, actions) => {
   .onValue(() => {
     var numberOfPeriods = 6;
     var name = elem.find('.js-add-plan-name').val();
+    var cloneCategories = elem.find('.js-add-plan-clone').prop('checked');
     var selectedPeriod = elem.find('.js-add-plan-period').val();
     var selectedPeriodIndex = periods.indexOf(selectedPeriod);
     // Loop the periods-array so we can take n periods from it with a slice
@@ -92,7 +99,8 @@ exports.init = (elem, _, actions) => {
 
     actions.addPlan({
       name,
-      periods: planPeriods
+      periods: planPeriods,
+      categories: cloneCategories ? categories.get() : []
     });
 
     elem.find('.js-add-plan-modal').modal('hide');
