@@ -9,11 +9,13 @@ var budget = require('./views/budget');
 var addCategory = require('./views/addCategory');
 var plans = require('./views/plans');
 var addPlan = require('./views/addPlan');
+var exporter = require('./views/exporter');
 
 localstate.load('state', state);
 localstate.sync('state', state);
 
 var viewState = {
+  state,
   plans: state.select('plans'),
   currentPlanId: state.select('currentPlanId'),
   categories: state.facets.currentCategories,
@@ -26,3 +28,4 @@ budget.init($('.js-budget'), viewState, actions);
 addCategory.init($('.js-add-category'), viewState, actions);
 plans.init($('.js-plans'), viewState, actions);
 addPlan.init($('.js-add-plan'), viewState, actions);
+exporter.init($('.js-footer'), viewState, actions);

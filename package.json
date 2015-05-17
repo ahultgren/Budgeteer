@@ -7,6 +7,7 @@
     "baconjs": "^0.7.53",
     "baobab": "^1.0.2",
     "bootstrap": "^3.3.4",
+    "filesaver.js": "^0.1.1",
     "ramda": "^0.13.0",
     "uuid": "^2.0.1",
     "virtual-dom": "^2.0.1",
