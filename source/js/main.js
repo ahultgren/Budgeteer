@@ -10,6 +10,7 @@ var addCategory = require('./views/addCategory');
 var plans = require('./views/plans');
 var addPlan = require('./views/addPlan');
 var exporter = require('./views/exporter');
+var importer = require('./views/importer');
 
 localstate.load('state', state);
 localstate.sync('state', state);
@@ -28,4 +29,5 @@ budget.init($('.js-budget'), viewState, actions);
 addCategory.init($('.js-add-category'), viewState, actions);
 plans.init($('.js-plans'), viewState, actions);
 addPlan.init($('.js-add-plan'), viewState, actions);
-exporter.init($('.js-footer'), viewState, actions);
+exporter.init($('.js-exporter'), viewState, actions);
+importer.init($('.js-importer'), viewState, actions);

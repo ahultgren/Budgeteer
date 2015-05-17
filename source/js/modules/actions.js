@@ -91,4 +91,11 @@ var actions = module.exports = {
     }
   },
 
+  loadAllData (data) {
+    //## Validate?
+    Object.keys(data).forEach((key) => {
+      state.set(key, data[key]);
+    });
+  },
+
 };
