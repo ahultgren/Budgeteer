@@ -16,6 +16,8 @@ Cursor.prototype.asProperty = Facet.prototype.asProperty = function () {
     .toProperty(cursor.get());
 };
 
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 //## Let users create these
 var categories = [
   {
@@ -50,7 +52,7 @@ module.exports = new Baobab({
     {
       name: 'Sample plan',
       id: 'default-plan',
-      periods: ['April', 'May', 'June', 'August', 'September', 'October'],
+      periods: [].concat(MONTHS, MONTHS).slice(new Date().getMonth(), new Date().getMonth() + 6),
       entries: [],
       categories: categories,
     }
